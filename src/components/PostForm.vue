@@ -13,17 +13,18 @@
         type="text"
         placeholder="Описание"
     >
-    <button
-        class="btn"
+    <my-button
         @click="createPost"
     >Создать
-    </button>
+    </my-button>
   </form>
 </template>
 
 <script>
+import MyButton from "@/components/UI/MyButton";
 export default {
   name: "PostForm",
+  components: {MyButton},
   data() {
     return {
       post: {
@@ -65,14 +66,5 @@ form > h4 {
   margin-bottom: 15px;
   width: 100%;
   border-radius: 5px;
-}
-
-.btn {
-  padding: 10px 15px;
-  background: none;
-  color: teal;
-  border: 1px solid teal;
-  border-radius: 5px;
-  cursor: pointer;
 }
 </style>

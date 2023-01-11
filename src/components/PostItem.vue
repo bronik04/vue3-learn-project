@@ -1,7 +1,12 @@
 <template>
   <li class="post">
-    <div><strong>Название:</strong> {{ post.title }}</div>
-    <div><strong>Описание:</strong> {{ post.body }}</div>
+    <div>
+      <div><strong>Название:</strong> {{ post.title }}</div>
+      <div><strong>Описание:</strong> {{ post.body }}</div>
+    </div>
+    <div class="btns">
+      <my-button>Удалить</my-button>
+    </div>
   </li>
 </template>
 
@@ -19,6 +24,9 @@ export default {
 
 <style scoped>
 .post {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 15px;
   border: 2px solid teal;
   margin-top: 15px;
