@@ -48,11 +48,8 @@ export default {
 <style scoped>
 
 form {
-  justify-self: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 50%;
 }
 
 form > h4 {
