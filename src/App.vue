@@ -21,20 +21,19 @@
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
 import MyModal from "@/components/UI/MyModal";
+import MyButton from "@/components/UI/MyButton";
+import axios from "axios";
 
 export default {
   components: {
     MyModal,
     PostList,
     PostForm,
+    MyButton,
   },
   data() {
     return {
-      posts: [
-        {id: 1, title: 'JavaScript', body: 'Описание поста'},
-        {id: 2, title: 'JavaScript 2', body: 'Описание поста 2'},
-        {id: 3, title: 'JavaScript 3', body: 'Описание поста 3'}
-      ],
+      posts: [],
       modalVisible: false
     }
   },
@@ -48,7 +47,19 @@ export default {
     },
     showModal() {
       this.modalVisible = true;
-    }
+    },
+    async fetchPosts() {
+      try {
+        const res = await
+            axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
+        this.posts = res.data;
+      } catch (err) {
+        alert(err);
+      }
+    },
+  },
+  mounted() {
+    this.fetchPosts();
   }
 }
 </script>

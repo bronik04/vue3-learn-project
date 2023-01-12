@@ -6,3 +6,4 @@ export default [
   MyInput,
   MyModal,
 ]
+
