@@ -5,14 +5,19 @@
       <div><strong>Описание:</strong> {{ post.body }}</div>
     </div>
     <div class="btns">
-      <my-button>Удалить</my-button>
+      <my-button
+       @click="$emit('remove', post)"
+      >Удалить
+      </my-button>
     </div>
   </li>
 </template>
 
 <script>
+import MyButton from "@/components/UI/MyButton";
 export default {
   name: "PostItem",
+  components: {MyButton},
   props: {
     post: {
       type: Object,
