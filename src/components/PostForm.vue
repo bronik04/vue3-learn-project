@@ -1,18 +1,16 @@
 <template>
   <form @submit.prevent>
     <h4>Создание поста</h4>
-    <input
+    <my-input
         v-model="post.title"
-        class="input"
         type="text"
         placeholder="Название"
-    >
-    <input
+    />
+    <my-input
         v-model="post.body"
-        class="input"
         type="text"
         placeholder="Описание"
-    >
+    />
     <my-button
         @click="createPost"
     >Создать
@@ -22,9 +20,10 @@
 
 <script>
 import MyButton from "@/components/UI/MyButton";
+import MyInput from "@/components/UI/MyInput";
 export default {
   name: "PostForm",
-  components: {MyButton},
+  components: {MyInput, MyButton},
   data() {
     return {
       post: {
@@ -60,11 +59,4 @@ form > h4 {
   margin-bottom: 15px;
 }
 
-.input {
-  padding: 10px 15px;
-  border: 1px solid teal;
-  margin-bottom: 15px;
-  width: 100%;
-  border-radius: 5px;
-}
 </style>
