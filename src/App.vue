@@ -1,19 +1,30 @@
 <template>
   <div class="app">
     <h1>Страница с постами</h1>
-    <my-button
-        @click="showModal"
-    >Создать пост
-    </my-button>
-    <my-modal v-model:show="modalVisible">
+    <div class="app__btns">
+      <my-button
+          @click="showModal"
+      >Создать пост
+      </my-button>
+      <my-select
+          v-model="selectedSort"
+          :options="sortOptions"
+      >
+      </my-select>
+    </div>
+    <my-modal
+        v-model:show="modalVisible"
+    >
       <post-form
           @create="createPost"
       />
     </my-modal>
     <post-list
-        :posts="posts"
+        :posts="sortedPost"
         @remove="removePost"
+        v-if="!isLoading"
     />
+    <div v-else>Идет загрузка...</div>
   </div>
 </template>
 
@@ -22,6 +33,7 @@ import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
 import MyModal from "@/components/UI/MyModal";
 import MyButton from "@/components/UI/MyButton";
+import MySelect from "@/components/UI/MySelect";
 import axios from "axios";
 
 export default {
@@ -30,11 +42,18 @@ export default {
     PostList,
     PostForm,
     MyButton,
+    MySelect,
   },
   data() {
     return {
       posts: [],
-      modalVisible: false
+      modalVisible: false,
+      isLoading: false,
+      selectedSort: '',
+      sortOptions: [
+        {value: 'title', name: 'По названию'},
+        {value: 'body', name: 'По описанию'}
+      ],
     }
   },
   methods: {
@@ -50,17 +69,34 @@ export default {
     },
     async fetchPosts() {
       try {
+        this.isLoading = true;
         const res = await
             axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
         this.posts = res.data;
       } catch (err) {
         alert(err);
+      } finally {
+        this.isLoading = false;
       }
     },
   },
   mounted() {
     this.fetchPosts();
-  }
+  },
+  computed: {
+    sortedPost() {
+      return [...this.posts].sort((post1, post2) => {
+        return post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
+      })
+    }
+  },
+  // watch: {
+  //   selectedSort(newValue) {
+  //     this.posts.sort((post1, post2) => {
+  //       return post1[newValue]?.localeCompare(post2[newValue])
+  //     })
+  //   }
+  // }
 }
 </script>
 
@@ -76,6 +112,11 @@ export default {
   padding: 20px;
   display: grid;
   row-gap: 15px;
+}
+
+.app__btns {
+  display: flex;
+  justify-content: space-between;
 }
 
 </style>
