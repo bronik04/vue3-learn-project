@@ -29,19 +29,20 @@
         v-if="!isLoading"
     />
     <div v-else>Идет загрузка...</div>
-    <div class="page__wrapper">
-      <div
-          :key="pageNumber"
-          v-for="pageNumber in totalPage"
-          class="page"
-          :class="{
-            'current-page': page === pageNumber
-          }"
-          @click="changePage(pageNumber)"
-      >
-        {{ pageNumber }}
-      </div>
-    </div>
+    <div ref="observer" class="observer"></div>
+<!--    <div class="page__wrapper">-->
+<!--      <div-->
+<!--          :key="pageNumber"-->
+<!--          v-for="pageNumber in totalPage"-->
+<!--          class="page"-->
+<!--          :class="{-->
+<!--            'current-page': page === pageNumber-->
+<!--          }"-->
+<!--          @click="changePage(pageNumber)"-->
+<!--      >-->
+<!--        {{ pageNumber }}-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -90,9 +91,9 @@ export default {
     showModal() {
       this.modalVisible = true;
     },
-    changePage(pageNumber) {
-      this.page = pageNumber;
-    },
+    // changePage(pageNumber) {
+    //   this.page = pageNumber;
+    // },
     async fetchPosts() {
       try {
         this.isLoading = true;
@@ -111,9 +112,37 @@ export default {
         this.isLoading = false;
       }
     },
+    async fetchMorePosts() {
+      try {
+        this.page += 1;
+        const res = await
+            axios.get('https://jsonplaceholder.typicode.com/posts', {
+              params: {
+                _page: this.page,
+                _limit: this.limit,
+              }
+            });
+        this.totalPage = Math.ceil(res.headers['x-total-count'] / this.limit);
+        this.posts = [...res.data, ...res.data];
+      } catch (err) {
+        alert(err);
+      }
+    },
   },
   mounted() {
     this.fetchPosts();
+    const options = {
+      rootMargin: '0px',
+      threshold: 1.0
+    }
+    const callback = (entries) => {
+      if(entries[0].isIntersecting && this.page < this.totalPage) {
+        this.fetchMorePosts();
+      }
+    };
+    const observer = new IntersectionObserver(callback, options);
+    observer.observe(this.$refs.observer);
+
   },
   computed: {
     sortedPost() {
@@ -127,9 +156,9 @@ export default {
     }
   },
   watch: {
-    page () {
-      this.fetchPosts();
-    }
+    // page () {
+    //   this.fetchPosts();
+    // }
     // selectedSort(newValue) {
     //   this.posts.sort((post1, post2) => {
     //     return post1[newValue]?.localeCompare(post2[newValue])
@@ -169,6 +198,11 @@ export default {
 
 .current-page {
   border: 1px red solid;
+}
+
+.observer {
+  height: 30px;
+  /*background: teal;*/
 }
 
 </style>
