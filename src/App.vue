@@ -1,11 +1,15 @@
 <template>
+  <my-navbar></my-navbar>
   <div class="app">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-
+import MyNavbar from "@/components/UI/Navbar";
+export default {
+  components: {MyNavbar}
+}
 </script>
 
 <style>
