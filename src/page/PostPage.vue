@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="posts">
     <h1>Страница с постами</h1>
     <my-input
         v-model="searchQuery"
@@ -29,20 +29,7 @@
         v-if="!isLoading"
     />
     <div v-else>Идет загрузка...</div>
-    <div ref="observer" class="observer"></div>
-    <!--    <div class="page__wrapper">-->
-    <!--      <div-->
-    <!--          :key="pageNumber"-->
-    <!--          v-for="pageNumber in totalPage"-->
-    <!--          class="page"-->
-    <!--          :class="{-->
-    <!--            'current-page': page === pageNumber-->
-    <!--          }"-->
-    <!--          @click="changePage(pageNumber)"-->
-    <!--      >-->
-    <!--        {{ pageNumber }}-->
-    <!--      </div>-->
-    <!--    </div>-->
+    <div v-intersection="fetchMorePosts" class="observer"></div>
   </div>
 </template>
 
@@ -131,17 +118,6 @@ export default {
   },
   mounted() {
     this.fetchPosts();
-    const options = {
-      rootMargin: '0px',
-      threshold: 1.0
-    }
-    const callback = (entries) => {
-      if(entries[0].isIntersecting && this.page < this.totalPage) {
-        this.fetchMorePosts();
-      }
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer);
 
   },
   computed: {
@@ -155,42 +131,24 @@ export default {
           post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
     }
   },
-  watch: {
-    // page () {
-    //   this.fetchPosts();
-    // }
-    // selectedSort(newValue) {
-    //   this.posts.sort((post1, post2) => {
-    //     return post1[newValue]?.localeCompare(post2[newValue])
-    //   })
-    // }
-  }
+  watch: {}
 }
 </script>
 
 <style>
+
+.posts {
+  display: grid;
+  row-gap: 10px;
+}
+
 .app__btns {
   display: flex;
   justify-content: space-between;
 }
 
-.page__wrapper {
-  display: flex;
-}
-
-.page {
-  border: 1px solid teal;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.current-page {
-  border: 1px red solid;
-}
-
 .observer {
   height: 30px;
-  /*background: teal;*/
 }
 
 </style>

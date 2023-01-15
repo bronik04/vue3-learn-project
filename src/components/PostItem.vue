@@ -1,12 +1,17 @@
 <template>
   <li class="post">
     <div>
+      <p>{{post.id}}</p>
       <div><strong>Название:</strong> {{ post.title }}</div>
       <div><strong>Описание:</strong> {{ post.body }}</div>
     </div>
-    <div class="btns">
+    <div class="post__btns">
       <my-button
-       @click="$emit('remove', post)"
+          @click="$router.push(`/posts/${post.id}`)"
+      >Открыть
+      </my-button>
+      <my-button
+          @click="$emit('remove', post)"
       >Удалить
       </my-button>
     </div>
@@ -15,6 +20,7 @@
 
 <script>
 import MyButton from "@/components/UI/MyButton";
+
 export default {
   name: "PostItem",
   components: {MyButton},
@@ -36,5 +42,10 @@ export default {
   border: 2px solid teal;
   margin-top: 15px;
   border-radius: 5px;
+}
+
+.post__btns {
+  display: flex;
+  gap: 10px;
 }
 </style>
