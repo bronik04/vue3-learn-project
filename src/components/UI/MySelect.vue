@@ -1,6 +1,6 @@
 <template>
   <select
-      v-model="modelValue"
+      :model-value="modelValue"
       @change="changeOption"
   >
     <option disabled value="">Выберите из списка</option>
@@ -18,9 +18,9 @@
 export default {
   name: 'my-select',
   props: {
-    // modelValue: {
-    //   type: String
-    // },
+    modelValue: {
+      type: String
+    },
     options: {
       type: Array,
       default: () => []
