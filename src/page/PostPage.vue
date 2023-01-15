@@ -99,22 +99,22 @@ export default {
         this.isLoading = false;
       }
     },
-    async fetchMorePosts() {
-      try {
-        this.page += 1;
-        const res = await
-            axios.get('https://jsonplaceholder.typicode.com/posts', {
-              params: {
-                _page: this.page,
-                _limit: this.limit,
-              }
-            });
-        this.totalPage = Math.ceil(res.headers['x-total-count'] / this.limit);
-        this.posts = [...res.data, ...res.data];
-      } catch (err) {
-        alert(err);
-      }
-    },
+    // async fetchMorePosts() {
+    //   try {
+    //     this.page += 1;
+    //     const res = await
+    //         axios.get('https://jsonplaceholder.typicode.com/posts', {
+    //           params: {
+    //             _page: this.page,
+    //             _limit: this.limit,
+    //           }
+    //         });
+    //     this.totalPage = Math.ceil(res.headers['x-total-count'] / this.limit);
+    //     this.posts = [...res.data, ...res.data];
+    //   } catch (err) {
+    //     alert(err);
+    //   }
+    // },
   },
   mounted() {
     this.fetchPosts();
